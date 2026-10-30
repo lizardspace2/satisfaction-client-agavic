@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 97%;          /* blanc cassé */
+    --foreground: 219 63% 15%;         /* bleu nuit */
+    --card: 0 0% 100%;
+    --card-foreground: 219 63% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 219 63% 15%;
+    --primary: 219 63% 15%;            /* bleu nuit AGAVIC */
+    --primary-foreground: 40 33% 97%;
+    --secondary: 42 52% 54%;           /* doré AGAVIC */
+    --secondary-foreground: 219 63% 15%;
+    --muted: 36 30% 92%;               /* beige */
+    --muted-foreground: 219 20% 40%;
+    --accent: 42 52% 54%;              /* doré */
+    --accent-foreground: 219 63% 15%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 36 20% 85%;
+    --input: 36 20% 82%;
+    --ring: 42 52% 54%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 219 63% 8%;
+    --foreground: 40 33% 95%;
+    --card: 219 55% 12%;
+    --card-foreground: 40 33% 95%;
+    --popover: 219 55% 11%;
+    --popover-foreground: 40 33% 95%;
+    --primary: 42 52% 54%;
+    --primary-foreground: 219 63% 12%;
+    --secondary: 219 40% 20%;
+    --secondary-foreground: 40 33% 95%;
+    --muted: 219 40% 18%;
+    --muted-foreground: 220 15% 65%;
+    --accent: 42 52% 54%;
+    --accent-foreground: 219 63% 12%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 219 35% 22%;
+    --input: 219 35% 25%;
+    --ring: 42 52% 54%;
+  }
+
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1, h2, h3, .font-display { @apply font-serif; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .gold-gradient {
+    background: linear-gradient(135deg, #d2a851 0%, #c9a24b 50%, #a98236 100%);
+  }
+  .navy-gradient {
+    background: linear-gradient(160deg, #0e1f3d 0%, #1a3260 60%, #294370 100%);
+  }
+}
+
+/* Barre de défilement discrète */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply bg-muted-foreground/20 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/40; }
