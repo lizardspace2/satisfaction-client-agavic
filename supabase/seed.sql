@@ -7,12 +7,15 @@
 -- ----------------------------------------------------------------------------
 -- 1. PARAMÈTRES DU CABINET
 -- ----------------------------------------------------------------------------
+-- google_review_url : remplacer par le vrai lien d'avis Google Business
+-- (« Demander des avis » dans la fiche → https://g.page/r/XXXXXXXXXXX/review
+--  ou https://search.google.com/local/writereview?placeid=ChIJ...)
 insert into public.enquete_satisfaction_settings (key, value) values ('cabinet', '{
   "company_name": "AGAVIC Patrimoine",
   "address": "45 rue de la Bourse, 69002 Lyon",
   "phone": "04 78 34 73 09",
   "email": "contact@agavic.fr",
-  "google_review_url": "https://g.page/r/agavic-patrimoine-lyon/review",
+  "google_review_url": "https://search.google.com/local/writereview?placeid=A_REMPLACER",
   "satisfaction_threshold": 6,
   "anonymous_allowed": true,
   "retention_months": 36,
