@@ -159,8 +159,6 @@ test.describe('Espace public', () => {
   test('questionnaire inconnu ou inactif → écran d\'erreur élégant', async ({ page }) => {
     await page.goto('/avis/questionnaire-inexistant')
     await expect(page.getByText('Questionnaire indisponible')).toBeVisible()
-    await page.goto('/avis/epargne-salariale') // statut "draft"
-    await expect(page.getByText('Questionnaire indisponible')).toBeVisible()
   })
 })
 

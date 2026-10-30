@@ -75,9 +75,9 @@ insert into public.enquete_satisfaction_questionnaires (id, title, description, 
    '{"anonymous":true,"estimated_minutes":"2","service_types":["Bilan patrimonial"]}'::jsonb),
   ('b0000000-0000-4000-8000-000000000003','Épargne retraite (PER)','Suivi des clients accompagnés sur la préparation retraite.','epargne-retraite','active',
    '{"anonymous":true,"estimated_minutes":"2","service_types":["PER et préparation retraite","Rendez-vous annuel"]}'::jsonb),
-  ('b0000000-0000-4000-8000-000000000004','Épargne salariale','Satisfaction des chefs d''entreprise sur les dispositifs PEE/PERECO.','epargne-salariale','draft',
+  ('b0000000-0000-4000-8000-000000000004','Épargne salariale','Satisfaction des chefs d''entreprise sur les dispositifs PEE/PERECO.','epargne-salariale','active',
    '{"anonymous":false,"estimated_minutes":"2","service_types":["Épargne salariale","PEE / PERECO"]}'::jsonb),
-  ('b0000000-0000-4000-8000-000000000005','Point annuel client','Questionnaire court pour le rendez-vous annuel de suivi.','point-annuel','archived',
+  ('b0000000-0000-4000-8000-000000000005','Point annuel client','Questionnaire court pour le rendez-vous annuel de suivi.','point-annuel','active',
    '{"anonymous":true,"estimated_minutes":"1","service_types":["Rendez-vous annuel"]}'::jsonb)
 on conflict (id) do nothing;
 
