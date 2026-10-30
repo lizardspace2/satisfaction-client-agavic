@@ -40,7 +40,7 @@ insert into auth.users (
 values
   ('00000000-0000-0000-0000-000000000000','e0000000-0000-4000-8000-000000000001','authenticated','authenticated','admin@agavic-demo.fr',    crypt('Admin2026!', gen_salt('bf')), now(), '', '', '', '', '', 0, null, '', '', '', now(), now(), '{"provider":"email","providers":["email"]}','{"full_name":"Direction AGAVIC"}', false),
   ('00000000-0000-0000-0000-000000000000','e0000000-0000-4000-8000-000000000002','authenticated','authenticated','responsable@agavic-demo.fr',crypt('Manager2026!', gen_salt('bf')), now(), '', '', '', '', '', 0, null, '', '', '', now(), now(), '{"provider":"email","providers":["email"]}','{"full_name":"Claire Fontaine"}', false),
-  ('00000000-0000-0000-0000-000000000000','e0000000-0000-4000-8000-000000000003','authenticated','authenticated','conseiller@agavic-demo.fr', crypt('Conseiller2026!', gen_salt('bf')), now(), '', '', '', '', '', 0, null, '', '', '', now(), now(), '{"provider":"email","providers":["email"]}','{"full_name":"Marc Delaunay"}', false)
+  ('00000000-0000-0000-0000-000000000000','e0000000-0000-4000-8000-000000000003','authenticated','authenticated','conseiller@agavic-demo.fr', crypt('Conseiller2026!', gen_salt('bf')), now(), '', '', '', '', '', 0, null, '', '', '', now(), now(), '{"provider":"email","providers":["email"]}','{"full_name":"Patrick Récipon"}', false)
 on conflict (id) do nothing;
 
 insert into auth.identities (id, user_id, provider_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
@@ -53,18 +53,16 @@ on conflict do nothing;
 insert into public.enquete_satisfaction_profiles (id, full_name, email, role, active) values
   ('e0000000-0000-4000-8000-000000000001','Direction AGAVIC','admin@agavic-demo.fr','admin', true),
   ('e0000000-0000-4000-8000-000000000002','Claire Fontaine','responsable@agavic-demo.fr','manager', true),
-  ('e0000000-0000-4000-8000-000000000003','Marc Delaunay','conseiller@agavic-demo.fr','advisor', true)
+  ('e0000000-0000-4000-8000-000000000003','Patrick Récipon','conseiller@agavic-demo.fr','advisor', true)
 on conflict (id) do nothing;
 
 -- ----------------------------------------------------------------------------
--- 3. CONSEILLERS (fictifs)
+-- 3. CONSEILLERS (équipe réelle AGAVIC — ajustez e-mails/postes si besoin)
 -- ----------------------------------------------------------------------------
 insert into public.enquete_satisfaction_advisors (id, profile_id, full_name, email, position, active) values
-  ('a0000000-0000-4000-8000-000000000001','e0000000-0000-4000-8000-000000000003','Marc Delaunay','m.delaunay@agavic-demo.fr','Conseiller en gestion de patrimoine', true),
-  ('a0000000-0000-4000-8000-000000000002',null,'Sophie Bertrand','s.bertrand@agavic-demo.fr','Conseillère en gestion de patrimoine', true),
-  ('a0000000-0000-4000-8000-000000000003',null,'Julien Roche','j.roche@agavic-demo.fr','Expert retraite', true),
-  ('a0000000-0000-4000-8000-000000000004',null,'Élise Marchand','e.marchand@agavic-demo.fr','Conseillère épargne salariale', true),
-  ('a0000000-0000-4000-8000-000000000005',null,'Thomas Vial','t.vial@agavic-demo.fr','Conseiller prévoyance', true)
+  ('a0000000-0000-4000-8000-000000000001','e0000000-0000-4000-8000-000000000003','Patrick Récipon','patrick.recipon@agavic.fr','Dirigeant — Conseiller en gestion de patrimoine', true),
+  ('a0000000-0000-4000-8000-000000000002',null,'Vianney Récipon','vianney.recipon@agavic.fr','Courtier en gestion de patrimoine', true),
+  ('a0000000-0000-4000-8000-000000000003',null,'Erwan Bertin','erwan.bertin@agavic.fr','Conseiller en gestion de patrimoine', true)
 on conflict (id) do nothing;
 
 -- ----------------------------------------------------------------------------
