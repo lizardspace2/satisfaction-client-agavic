@@ -216,9 +216,10 @@ export default function SurveyPage() {
   }
 
   if (phase === 'done') {
+    const overall = answerByRole(questions, answers, 'overall') as number | null
     return (
       <SurveyShell>
-        <ThankYouScreen googleUrl={googleUrl} />
+        <ThankYouScreen googleUrl={googleUrl} satisfied={overall != null && overall >= 9} />
       </SurveyShell>
     )
   }
@@ -404,9 +405,12 @@ function StepNav({ onPrev, onNext, nextLabel, nextDisabled, hideNext, optional }
 }
 
 // ---------------------------------------------------------------------------
-// Page de remerciement — le lien Google reste accessible à tous les répondants
+// Page de remerciement — lien Google réservé aux clients satisfaits (note ≥ 9) ;
+// en dessous, on propose un contact direct avec le cabinet.
 // ---------------------------------------------------------------------------
-function ThankYouScreen({ googleUrl }: { googleUrl: string }) {
+const MANAGER_EMAIL = 'vianney.recipon@agavic.fr'
+
+function ThankYouScreen({ googleUrl, satisfied }: { googleUrl: string; satisfied: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.94 }}
@@ -425,7 +429,7 @@ function ThankYouScreen({ googleUrl }: { googleUrl: string }) {
       <p className="mx-auto mt-3 max-w-md text-muted-foreground">
         Votre avis contribue directement à l'amélioration continue de notre accompagnement.
       </p>
-      {googleUrl && (
+      {satisfied && googleUrl && (
         <div className="mt-8">
           <p className="mb-3 text-sm text-muted-foreground">
             Vous pouvez également partager votre avis sur Google — cela nous aidera beaucoup.
@@ -434,6 +438,19 @@ function ThankYouScreen({ googleUrl }: { googleUrl: string }) {
             <a href={googleUrl} target="_blank" rel="noopener noreferrer">
               <Star className="h-4 w-4 fill-gold-400 text-gold-500" />
               Laisser un avis sur Google
+            </a>
+          </Button>
+        </div>
+      )}
+      {!satisfied && (
+        <div className="mt-8">
+          <p className="mb-3 text-sm text-muted-foreground">
+            Votre retour compte beaucoup pour nous — un membre de l'équipe
+            peut vous répondre directement.
+          </p>
+          <Button asChild variant="outline" size="lg" className="gap-2">
+            <a href={`mailto:${MANAGER_EMAIL}?subject=${encodeURIComponent('Suite à votre questionnaire satisfaction AGAVIC')}`}>
+              Écrire à notre équipe
             </a>
           </Button>
         </div>

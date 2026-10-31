@@ -106,9 +106,11 @@ test.describe('Espace public', () => {
     await expect(page.getByText(/Recommanderiez-vous AGAVIC/)).toBeVisible()
     await page.getByRole('button', { name: 'Note 3' }).click()
 
-    // Écran de remerciement
+    // Écran de remerciement : pas de lien Google pour un client insatisfait,
+    // mais un contact direct avec le cabinet
     await expect(page.getByRole('heading', { name: /Merci pour votre confiance/ })).toBeVisible({ timeout: 15000 })
-    await expect(page.getByRole('link', { name: /Laisser un avis sur Google/ })).toBeVisible()
+    await expect(page.getByRole('link', { name: /Laisser un avis sur Google/ })).not.toBeVisible()
+    await expect(page.getByRole('link', { name: /Écrire à notre équipe/ })).toBeVisible()
   })
 
   test('parcours satisfait (note 10) : message positif + lien Google', async ({ page }) => {

@@ -11,7 +11,7 @@ Application web complète (React + TypeScript + Supabase + Tailwind) permettant 
 - Notation 0-10, étoiles, choix, NPS, texte libre, oui/non, date, e-mail, liste déroulante
 - **Moteur de logique conditionnelle** (SI note ≤ 6 → parcours insatisfaction…)
 - Sauvegarde automatique du brouillon, reprise, protection double soumission
-- Écran de remerciement avec lien Google Business accessible **à tous** les répondants
+- Écran de remerciement : lien Google Business **réservé aux notes ≥ 9/10** ; en dessous, contact direct proposé au cabinet
 
 ### Espace cabinet (`/admin`, sécurisé)
 - **Tableau de bord** : KPIs temps réel, évolution, répartition, motifs, satisfaction/conseiller
