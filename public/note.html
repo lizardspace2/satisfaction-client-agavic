@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Votre avis — AGAVIC Patrimoine</title>
+<style>
+  :root { --navy:#0e1f3d; --navy-deep:#081226; --gold:#c9a24b; --gold-light:#d2a851; --cream:#faf8f4; }
+  * { margin:0; box-sizing:border-box; }
+  body {
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:var(--navy-deep); font-family:Georgia, 'Times New Roman', serif;
+    color:var(--cream); padding:24px;
+  }
+  .card {
+    width:100%; max-width:480px; background:var(--cream); color:var(--navy);
+    border-radius:18px; padding:40px 32px; text-align:center;
+    box-shadow:0 24px 60px rgba(0,0,0,.45);
+  }
+  .brand { font-size:13px; letter-spacing:.28em; color:var(--gold); text-transform:uppercase; }
+  h1 { font-size:26px; margin:14px 0 10px; }
+  p.lead { font-size:15px; color:#4a5568; line-height:1.55; }
+  .scale { display:flex; gap:6px; justify-content:center; margin:26px 0 8px; flex-wrap:wrap; }
+  .scale a {
+    width:34px; height:40px; display:inline-flex; align-items:center; justify-content:center;
+    border:1px solid #d8d0c0; border-radius:9px; text-decoration:none; color:var(--navy);
+    font-size:15px; transition:all .15s ease;
+  }
+  .scale a:hover { background:var(--navy); color:var(--cream); border-color:var(--navy); }
+  .hint { font-size:12px; color:#8a8f9c; margin-top:6px; }
+  textarea {
+    width:100%; min-height:110px; margin-top:22px; padding:12px 14px;
+    border:1px solid #d8d0c0; border-radius:10px; font-family:inherit; font-size:14px;
+    resize:vertical; background:#fff;
+  }
+  textarea:focus { outline:2px solid var(--gold-light); border-color:var(--gold-light); }
+  .btn {
+    display:inline-block; margin-top:18px; padding:13px 26px; border:none; cursor:pointer;
+    background:var(--gold); color:var(--navy-deep); font-family:inherit; font-size:15px;
+    font-weight:bold; border-radius:10px; text-decoration:none; transition:filter .15s ease;
+  }
+  .btn:hover { filter:brightness(1.08); }
+  .btn[disabled] { opacity:.6; cursor:wait; }
+  .secondary { margin-top:14px; font-size:12px; color:#8a8f9c; }
+  .secondary a { color:var(--gold-light); }
+  .ok { color:#2f7d4f; font-size:15px; margin-top:20px; }
+  .err { color:#b3402f; font-size:13px; margin-top:12px; }
+  .check { width:56px; height:56px; margin:0 auto 4px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--navy-deep); }
+</style>
+</head>
+<body>
+<div class="card" id="app">
+  <div class="brand">AGAVIC Patrimoine</div>
+  <div id="view"></div>
+</div>
+
+<script>
+// ==== Configuration =======================================================
+const SUPABASE_URL      = 'https://kjyylccscmatfsaxohnw.supabase.co'
+const ANON_KEY          = 'sb_publishable_r6bFEjhojal64BfeE3golw_hnNQcNPH'
+const GOOGLE_MIN_NOTE   = 9                      // note minimale pour proposer Google
+const DEFAULT_SLUG      = 'satisfaction-rendez-vous'
+const MANAGER_EMAIL     = 'vianney.recipon@agavic.fr'
+// ==========================================================================
+
+const params = new URLSearchParams(location.search)
+const note   = params.get('n') === null ? null : parseInt(params.get('n'), 10)
+const slug   = params.get('q') || DEFAULT_SLUG
+const view   = document.getElementById('view')
+
+const HEADERS = { apikey: ANON_KEY, Authorization: 'Bearer ' + ANON_KEY, 'Content-Type': 'application/json' }
+
+function picker() {
+  let buttons = ''
+  for (let i = 0; i <= 10; i++) {
+    buttons += `<a href="?q=${encodeURIComponent(slug)}&n=${i}">${i}</a>`
+  }
+  view.innerHTML = `
+    <h1>Comment évaluez-vous votre expérience&nbsp;?</h1>
+    <p class="lead">Une note de 0 à 10 suffit — cela ne prend que quelques secondes.</p>
+    <div class="scale">${buttons}</div>
+    <p class="hint">0 = pas du tout satisfait · 10 = très satisfait</p>`
+}
+
+async function googleUrl() {
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/enquete_satisfaction_get_public_settings', { headers: HEADERS })
+    const s = await r.json()
+    return s && s.google_review_url ? s.google_review_url : ''
+  } catch { return '' }
+}
+
+async function questionnaireId() {
+  const r = await fetch(
+    SUPABASE_URL + '/rest/v1/enquete_satisfaction_questionnaires?slug=eq.' + encodeURIComponent(slug) + '&status=eq.active&select=id',
+    { headers: HEADERS })
+  const rows = await r.json()
+  return rows && rows[0] ? rows[0].id : null
+}
+
+async function satisfied() {
+  const g = await googleUrl()
+  view.innerHTML = `
+    <div class="check">✓</div>
+    <h1>Merci pour votre confiance&nbsp;!</h1>
+    <p class="lead">Votre note de ${note}/10 nous fait très plaisir.<br>
+    Si vous avez un instant, vous pouvez aussi partager votre expérience sur Google — cela nous aide beaucoup.</p>
+    ${g ? `<a class="btn" href="${g}" target="_blank" rel="noopener noreferrer">★ Laisser un avis sur Google</a>` : ''}`
+}
+
+function commentForm() {
+  view.innerHTML = `
+    <div class="check">✓</div>
+    <h1>Merci pour votre retour</h1>
+    <p class="lead">Votre note de ${note}/10 est bien prise en compte.<br>
+    Un commentaire nous aide à mieux vous servir — un conseiller vous répondra personnellement si besoin.</p>
+    <textarea id="cmt" placeholder="Votre commentaire (facultatif)…"></textarea>
+    <button class="btn" id="send">Envoyer</button>
+    <p class="secondary">Vous pouvez aussi écrire directement à <a href="mailto:${MANAGER_EMAIL}">${MANAGER_EMAIL}</a></p>
+    <p class="err" id="err" style="display:none"></p>`
+  document.getElementById('send').onclick = submitComment
+}
+
+async function submitComment() {
+  const btn = document.getElementById('send')
+  const err = document.getElementById('err')
+  btn.disabled = true
+  try {
+    const qid = await questionnaireId()
+    if (!qid) throw new Error('questionnaire introuvable')
+    const r = await fetch(SUPABASE_URL + '/rest/v1/rpc/enquete_satisfaction_submit_survey_response', {
+      method: 'POST', headers: HEADERS,
+      body: JSON.stringify({
+        p_questionnaire_id: qid,
+        p_overall_score: note,
+        p_comment: document.getElementById('cmt').value.trim() || null,
+        p_anonymous: true,
+      }),
+    })
+    if (!r.ok) throw new Error(await r.text())
+    view.innerHTML = `
+      <div class="check">✓</div>
+      <h1>Merci, c'est transmis</h1>
+      <p class="lead">Votre retour a bien été enregistré. Nous en tenons compte pour améliorer notre accompagnement.</p>
+      <p class="secondary">Besoin d'échanger&nbsp;? <a href="mailto:${MANAGER_EMAIL}">${MANAGER_EMAIL}</a></p>`
+  } catch (e) {
+    err.style.display = 'block'
+    err.textContent = "Une erreur est survenue — réessayez ou écrivez à " + MANAGER_EMAIL
+    btn.disabled = false
+  }
+}
+
+if (note === null || isNaN(note) || note < 0 || note > 10) picker()
+else if (note >= GOOGLE_MIN_NOTE) satisfied()
+else commentForm()
+</script>
+</body>
+</html>

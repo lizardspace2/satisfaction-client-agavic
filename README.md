@@ -72,6 +72,16 @@ values ('<uuid-utilisateur>', 'Prénom Nom', 'email@agavic.fr', 'admin');
 - Notes internes et réponses : réservées au personnel authentifié, filtrées par rôle
 - RGPD : anonymat possible, durée de conservation configurable, suppression confirmée
 
+## Notation en un clic dans un e-mail
+
+- **`emails/notation-email.html`** : bloc HTML compatible messageries (Brevo, Mailchimp,
+  signature enrichie) — rangée de boutons 0–10 pointant vers `/note.html?n=<note>`
+  (option `&q=<slug>` pour cibler un autre questionnaire).
+- **`public/note.html`** : page autonome servie à `/note.html` — note ≥ 9 → bouton
+  « avis Google » ; note < 9 → zone de commentaire enregistrée via
+  `submit_survey_response` (le suivi d'insatisfaction se déclenche automatiquement ≤ 6).
+  Seuil modifiable via la constante `GOOGLE_MIN_NOTE`.
+
 ## Intégrations futures
 L'architecture est prête pour brancher **Resend** ou **Brevo** (e-mails transactionnels)
 et un fournisseur **SMS** via Supabase Edge Functions — les points d'extension sont les
